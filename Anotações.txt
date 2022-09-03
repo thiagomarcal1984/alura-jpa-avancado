@@ -78,3 +78,20 @@ pedido precisa ser atualizado sempre que um novo item de pedido for incluído:
 	public BigDecimal getValor() {
 		return precoUnitario.multiply(new BigDecimal(quantidade));
 	}
+
+Como retornar resultados de JPQL com colunas de dados mistos: 
+	1) Retornando uma lista com array de objetos (forma deselegante):
+		public List<Object[]> relatorioDeVendas() {
+			String jpql = "SELECT produto.nome, "
+					+ "SUM(item.quantidade), "
+					+ "MAX(pedido.data) "
+					+ "FROM Pedido pedido "
+					+ "JOIN pedido.itens item "
+					+ "JOIN item.produto produto "
+					+ "GROUP BY produto.nome "
+					+ "ORDER BY item.quantidade DESC ";
+			return em.createQuery(jpql, Object[].class)
+					.getResultList();
+		}
+
+	2) Próxima aula vai explicar...
