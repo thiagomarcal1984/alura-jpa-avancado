@@ -131,3 +131,10 @@ chamadas no método createNamedQuery (ao invés de createQuery) do entityManager
 Named queries parecem poluir a classe das entidades, e podem ser difíceis de
 invocar e dar manutenção (repare que nos códigos o nome da named query foi 
 precedido do nome da entidade que a contém, para facilitar a procura).
+
+Por padrão, sempre que uma anotação ManyToOne ou OneToOne for usada, o JPA vai
+incluir as entidades anotadas no select. Isso torna a performance do SQL pior.
+
+Os comportamentos das anotações de relacionamento podem ser Eager ou Lazy. 
+Por padrão o comportamento dos relacionamentos anotados com (?)ToOne é Eager,
+e os relacionamentos anotados com (?)ToMany é Lazy.
