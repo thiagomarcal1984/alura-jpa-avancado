@@ -114,3 +114,20 @@ Como retornar resultados de JPQL com colunas de dados mistos:
 					.getResultList();
 		}
 
+Named queries são JPQL declarados nas classes de entidade JPA do projeto. São 
+chamadas no método createNamedQuery (ao invés de createQuery) do entityManager.
+	// Classe Produto
+	@NamedQuery(name = "Produto.produtosPorCategoria", 
+		query = "SELECT p FROM Produto p WHERE p.categoria.nome = :nome")
+	public class Produto { ...
+
+	// Classe ProdutoDao
+	public List<Produto> buscarPorNomeDaCategoria(String nome) {
+		return em.createNamedQuery("Produto.produtosPorCategoria", Produto.class)
+				.setParameter("nome", nome)
+				.getResultList();
+	}
+
+Named queries parecem poluir a classe das entidades, e podem ser difíceis de
+invocar e dar manutenção (repare que nos códigos o nome da named query foi 
+precedido do nome da entidade que a contém, para facilitar a procura).
