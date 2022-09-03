@@ -1,0 +1,16 @@
+Para criar uma relação ManyToMany (com uma tabela intermediária e sem outros 
+campos além dos ids das tabelas relacionadas), basta usar:
+
+    // classe Pedido:
+	@ManyToMany
+	@JoinTable("itens_pedido") // Não obrigatório. Nomeia tabela intermediária.
+	private List<Produto> produtos;
+
+Como no exercício a tabela intermediária contém outros atributos (quantidade e
+preço da venda na época), é necessário criar uma entidade à parte.
+
+    Pedidos <- ItemPedido -> Produto
+
+    Pedidos mapeia @OneToMany para ItemPedido.
+    ItemPedido mapeia @ManyToOne (inverso) para Pedidos e para Produto.
+    Produto não tem o mapeamento bidirecional, como Pedido/ItemPedido.
