@@ -36,3 +36,22 @@ classes para inserir os dois objetos relacionados:
 		item.setPedido(this);
 		this.itens.add(item);
 	}
+
+É importante que tabelas com relacionamento ManyToMany tenham efeito cascata na
+inserção/alteração/exclusão de itens. Para isso, acrescente o parâmetro cascade
+na anotação OneToMany:
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+	private List<ItemPedido> itens = new ArrayList<>();
+
+O nome das propriedades em cammelCase é substituido no banco de dados por 
+snake_case nas entidades com relacionamento OneToMany ou ManyToOne. Isso não 
+acontece no ManyToMany. As entidades que participam de um relacionamento 
+ManyToMany precisam ter o nome da coluna redefinido para snake_case:
+
+    // Classe ItemPedido
+	@Column(name = "preco_unitario")
+	private BigDecimal precoUnitario;
+
+    // Classe Pedido
+	@Column(name = "valor_total")
+	private BigDecimal valorTotal;
