@@ -38,7 +38,7 @@ public class Pedido {
 		this.cliente = cliente;
 	}
 
-	public void adicionarPedido(ItemPedido item) {
+	public void adicionarItem(ItemPedido item) {
 		item.setPedido(this);
 		this.itens.add(item);
 		this.valorTotal = valorTotal.add(item.getValor());

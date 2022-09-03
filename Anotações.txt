@@ -94,4 +94,23 @@ Como retornar resultados de JPQL com colunas de dados mistos:
 					.getResultList();
 		}
 
-	2) Próxima aula vai explicar...
+	2) Criando uma classe própria que retorne VO's (value objects sem setters;
+	   repare na notação new, que cria um objeto e usa os resultados do JPQL
+	   como parâmetro pra construir cada elemento do resultado):
+
+	   // Perceba que, na JPQL, você precisa dizer o caminho completo para a
+	   // a classe que você quer que retorne ao usar o comando new.
+		public List<RelatorioDeVendasVo> relatorioDeVendas() {
+			String jpql = "SELECT new br.com.alura.loja.vo.RelatorioDeVendasVo("
+					+ "produto.nome, "
+					+ "SUM(item.quantidade), "
+					+ "MAX(pedido.data)) "
+					+ "FROM Pedido pedido "
+					+ "JOIN pedido.itens item "
+					+ "JOIN item.produto produto "
+					+ "GROUP BY produto.nome "
+					+ "ORDER BY item.quantidade DESC ";
+			return em.createQuery(jpql, RelatorioDeVendasVo.class)
+					.getResultList();
+		}
+
