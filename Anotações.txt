@@ -14,3 +14,25 @@ preço da venda na época), é necessário criar uma entidade à parte.
     Pedidos mapeia @OneToMany para ItemPedido.
     ItemPedido mapeia @ManyToOne (inverso) para Pedidos e para Produto.
     Produto não tem o mapeamento bidirecional, como Pedido/ItemPedido.
+
+Cuidado ao definir mapeamentos bidirecionais. Senão, outras tabelas são criadas
+sem necessidade (no exemplo, seria a tabela pedidos_itens_pedido). Para evitar
+essa duplicidade de tabelas com mesma função, use o parâmetro mappedBy na
+anotação do relacionamento:
+    // Código da classe Pedido:
+	@OneToMany(mappedBy = "pedido")
+	private List<ItemPedido> produtos;
+    // Onde "pedido" corresponde ao nome da variável que representa a  
+    // propriedade privada na classe ItemPedido que se relaciona com a 
+    // classe Pedido.
+
+Uma boa prática: para cada definição de lista nas entidades, instancie uma
+implementação da lista, para evitar Null Pointer Exceptions.
+
+Ao inserir conteúdo de uma relação ManyToMany, crie um método em uma das 
+classes para inserir os dois objetos relacionados:
+
+	public void adicionarPedido(ItemPedido item) {
+		item.setPedido(this);
+		this.itens.add(item);
+	}
