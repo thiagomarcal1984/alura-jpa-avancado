@@ -171,3 +171,42 @@ Se você quiser criar consultas JPQL com parâmetros opcionais, você precisaria
 		}).
 
 Isso é trabalhoso, porque duplica os ifs para cada parâmetro opcional.
+
+Criteria API:
+   public List<Produto> buscarPorParametrosComCriteria(String nome, 
+         BigDecimal preco, LocalDate dataCadastro) {
+      // Criar o construtor de critérios.
+      CriteriaBuilder builder = em.getCriteriaBuilder();
+
+      // Criar a query para a classe Produto (que resulta em objetos Produto).
+      CriteriaQuery<Produto> query = builder.createQuery(Produto.class);
+
+      // Cria um objeto Root, que corresponde à cláuslua FROM do JPQL.
+      Root<Produto> from = query.from(Produto.class);
+
+      // "Predicate filtros" receberá os filtros aplicáveis à JPQL.
+      // builder.and() cria o primeiro predicado (" WHERE 1=1 ") na JPQL.
+      Predicate filtros = builder.and();
+
+      // Para cada parâmetro opcional, redefine os filtros com o builder.and().
+      // O builder.equal() serve para comparar um valor X com um valor Y.
+      // O método from.get(propriedade) retorna a referência a uma propriedade 
+      // contida na entidade FROM referenciada no JPQL.
+      if (nome != null && !nome.trim().isEmpty()) {
+         filtros = builder.and(
+            filtros, builder.equal(from.get("nome"), nome)
+         );
+      }
+      if (preco != null) {
+         filtros = builder.and(
+            filtros, builder.equal(from.get("preco"), preco)
+         );
+      }
+      if (dataCadastro != null) {
+         filtros = builder.and(
+            filtros, builder.equal(from.get("dataCadastro"), dataCadastro)
+         );
+      }
+      query.where(filtros);
+      return em.createQuery(query).getResultList();
+   }
