@@ -217,3 +217,16 @@ outra entidade de banco de dados, não uma tabela à parte.
 
 A anotação Embedded serve para indicar que as colunas da *propriedade* anotada
 serão embutidas na tabela da entidade que contém a propriedade anotada.
+
+Mapeamento de herança no JPA:
+
+1) Mapeamento de tabela única na classe base:
+	@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+	public class Produto { ... }
+
+	// Usando essa estratégia, a tabela acaba recebendo uma coluna
+	// no DB chamada DTYPE, que vai definir a classe do registro.
+
+2) Mapeamento em que os atributos das subclasses ficam em tabelas separadas: 
+	@Inheritance(strategy = InheritanceType.JOINED)
+	public class Produto { ... }
