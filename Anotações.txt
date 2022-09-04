@@ -138,3 +138,21 @@ incluir as entidades anotadas no select. Isso torna a performance do SQL pior.
 Os comportamentos das anotações de relacionamento podem ser Eager ou Lazy. 
 Por padrão o comportamento dos relacionamentos anotados com (?)ToOne é Eager,
 e os relacionamentos anotados com (?)ToMany é Lazy.
+
+O carregamento Lazy tem uma desvantagem: se o EntityManager estiver fechado 
+quando uma entidade gerenciada contiver uma propriedade ainda não carregada,
+uma exceção será lançada (LazyInitializationException: não é possível o 
+carregamento lazy da entidade, porque a sessão foi fechada).
+
+Para evitar essa exceção, é necessário criar uma query planejada que contenha
+um JPQL com o comando JOIN FETCH. Essas palavras servem para carregar, apenas 
+para o JPQL específico, o carregamento dos objetos que de outra forma seriam
+carregadas de forma lazy:
+
+	public Pedido buscarPedidoComCliente(Long id) {
+		return em.createQuery(
+			"SELECT p FROM Pedido p " + 
+			"JOIN FETCH p.cliente WHERE p.id = :id", Pedido.class)
+				.setParameter("id", id)
+				.getSingleResult();
+	}
