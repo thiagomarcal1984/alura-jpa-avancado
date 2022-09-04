@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "produtos")
 @NamedQuery(name = "Produto.produtosPorCategoria", 
-query = "SELECT p FROM Produto p WHERE p.categoria.nome = :nome")
+query = "SELECT p FROM Produto p WHERE p.categoria.categoriaId.nome = :nome")
 @Inheritance(strategy = InheritanceType.JOINED)
 //@DiscriminatorColumn(name = "tipo_produto") 
 // Por padrão o nome da coluna no DB eh DTYPE. 

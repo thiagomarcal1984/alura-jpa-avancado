@@ -233,3 +233,11 @@ Mapeamento de herança no JPA:
 
 Lembre-se: as anotações de herança com a anotação @Inheritance ficam sempre
 na classe base.
+
+Chaves compostas: na JPA, é necessário criar classes separadas para criar uma
+chave composta e anotá-las com a anotação Embeddable. A classe que vai conter
+a chave composta precisa anotar a propriedade de identificação com a a anotação
+EmbeddedId.
+
+É bom que a classe que representa a ID implemente a interface Serializable (?).
+Framekworks de teste, por exemplo, podem exigir a implementação da interface.
