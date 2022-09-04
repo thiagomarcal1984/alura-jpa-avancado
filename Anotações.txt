@@ -230,3 +230,6 @@ Mapeamento de herança no JPA:
 2) Mapeamento em que os atributos das subclasses ficam em tabelas separadas: 
 	@Inheritance(strategy = InheritanceType.JOINED)
 	public class Produto { ... }
+
+Lembre-se: as anotações de herança com a anotação @Inheritance ficam sempre
+na classe base.
