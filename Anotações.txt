@@ -156,3 +156,18 @@ carregadas de forma lazy:
 				.setParameter("id", id)
 				.getSingleResult();
 	}
+
+Se você quiser criar consultas JPQL com parâmetros opcionais, você precisaria:
+	1) criar um JPQL sem filtro (jpql = "SELECT p FROM Produto p WHERE 1=1 ");
+	2) testar se os parâmetros opcionais estão preenchidos:
+		(if (parm1 != null) {
+			jpql += "AND parm1 = :parm1"
+		});
+	3) criar uma TypedQuery baseado na JPQL criada nos passos anteriores:
+		TypedQuery<Produto> query = em.createQuery(jpql, Produto.class);
+	4) setar os parâmetros opcionais na TypedQuery:
+		(if (parm1 == null) {
+			query.setParameter("parm1", parm1);
+		}).
+
+Isso é trabalhoso, porque duplica os ifs para cada parâmetro opcional.
