@@ -210,3 +210,10 @@ Criteria API:
       query.where(filtros);
       return em.createQuery(query).getResultList();
    }
+
+Embedded e Embeddable: classes grandes podem ser quebradas em classes menores.
+A anotação Embeddable serve para indicar que a *classe* anotada será parte de 
+outra entidade de banco de dados, não uma tabela à parte.
+
+A anotação Embedded serve para indicar que as colunas da *propriedade* anotada
+serão embutidas na tabela da entidade que contém a propriedade anotada.
